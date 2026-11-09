@@ -1,0 +1,278 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+const resources = {
+  en: {
+    translation: {
+      // General
+      appTitle: 'NETWORKING CORE',
+      subtitle: 'Visual Guide to Network Architecture, Protocols & Security',
+      description: 'Explore how computers communicate, how network protocols work, how data travels across networks, and how secure communication protects information.',
+      label: 'Interactive Animated Networking Academy',
+      
+      // Navigation
+      previousChapter: 'Previous Chapter',
+      nextChapter: 'Next Chapter',
+      playAnimation: 'Play Animation',
+      pauseAnimation: 'Pause Animation',
+      replayAnimation: 'Replay Animation',
+      animationSpeed: 'Animation Speed',
+      fullscreen: 'Fullscreen',
+      exitFullscreen: 'Exit Fullscreen',
+      chapterNavigation: 'Chapter Navigation',
+      progress: 'Progress',
+      languageToggle: 'Language',
+      presenterMode: 'Presenter Mode',
+      
+      // Chapters
+      chapter: 'Chapter',
+      of: 'of',
+      module: 'Module',
+      selectModule: 'Select module',
+      showChapters: 'Show chapter list',
+      hideChapters: 'Hide chapter list',
+      chapters: 'chapters',
+      
+      // Common terms
+      client: 'Client',
+      server: 'Server',
+      router: 'Router',
+      switch: 'Switch',
+      packet: 'Packet',
+      frame: 'Frame',
+      segment: 'Segment',
+      protocol: 'Protocol',
+      network: 'Network',
+      internet: 'Internet',
+      lan: 'LAN',
+      wan: 'WAN',
+      interface: 'Interface',
+      node: 'Node',
+      device: 'Device',
+      communication: 'Communication',
+      request: 'Request',
+      response: 'Response',
+      send: 'Send',
+      receive: 'Receive',
+      connection: 'Connection',
+      data: 'Data',
+      header: 'Header',
+      payload: 'Payload',
+      trailer: 'Trailer',
+      encapsulation: 'Encapsulation',
+      decapsulation: 'Decapsulation',
+      
+      // Chapter titles
+      chapter1: 'How Computer Networks Communicate',
+      chapter2: 'The ISO/OSI Network Model',
+      chapter3: 'The TCP/IP Model and Its Layers',
+      chapter4: 'Network Encapsulation and Decapsulation',
+      chapter5: 'Ethernet — Communication Inside a Local Network',
+      chapter6: 'MAC Addresses — Identifying Network Interfaces',
+      chapter7: 'ARP — Finding a Device\'s MAC Address',
+      chapter8: 'IP Addressing — Identifying Devices Across Networks',
+      chapter9: 'Public and Private IP Addressing',
+      chapter10: 'Subnetting — Dividing Networks into Smaller Networks',
+      chapter11: 'IP Routing — How Packets Find Their Destination',
+      chapter12: 'NAT — Connecting Private Networks to the Internet',
+      chapter13: 'DHCP — How Devices Receive Network Configuration',
+      chapter14: 'TCP — Reliable, Ordered Communication',
+      chapter15: 'TCP Three-Way Handshake — SYN, SYN-ACK, ACK',
+      chapter16: 'UDP — Fast, Connectionless Datagram Communication',
+      chapter17: 'Ports — Identifying Network Services',
+      chapter18: 'DNS — Translating Domain Names into IP Addresses',
+      chapter19: 'HTTP — How Web Browsers and Servers Communicate',
+      chapter20: 'HTTPS — Securing HTTP with TLS',
+      chapter21: 'Securing HTTP with HTTPS',
+      chapter22: 'Securing Email Transmission — SMTP with TLS',
+      chapter23: 'Securing Email Retrieval — POP3 with TLS',
+      chapter24: 'Securing Email Access — IMAP with TLS',
+      chapter25: 'SSH vs TELNET — Secure Remote Access',
+      chapter26: 'VPN — Creating a Secure Network over an Insecure Network',
+      chapter27: 'ICMP — Network Diagnostics and Error Reporting',
+      chapter28: 'WebSockets — Real-Time Two-Way Communication',
+      chapter29: 'How Modern Web Infrastructure Handles Network Traffic',
+      chapter30: 'One Complete Network Request — From Application to Server',
+      
+      // Module titles
+      module1: 'Networking Foundations',
+      module2: 'Ethernet, MAC, IP and Network Access',
+      module3: 'Transport Protocols and Ports',
+      module4: 'Core Network Protocols',
+      module5: 'Securing Network Communication',
+      module6: 'Additional Networking Core Protocols',
+      module7: 'Complete Network Communication',
+      
+      // Learning structure
+      introduce: 'Introduce',
+      visualize: 'Visualize',
+      animate: 'Animate',
+      explain: 'Explain',
+      inspect: 'Inspect',
+      summarize: 'Summarize',
+      connect: 'Connect',
+      keyTakeaways: 'Key Takeaways',
+      relatedChapters: 'Related Chapters',
+      technicalDetails: 'Technical Details',
+      
+      // Controls
+      speed: 'Speed',
+      slow: 'Slow',
+      normal: 'Normal',
+      fast: 'Fast',
+      step: 'Step',
+      reset: 'Reset',
+      
+      // Status
+      loading: 'Loading...',
+      ready: 'Ready',
+      playing: 'Playing',
+      current: 'Current',
+      paused: 'Paused',
+      completed: 'Completed',
+    }
+  },
+  bn: {
+    translation: {
+      // General
+      appTitle: 'নেটওয়ার্কিং কোর',
+      subtitle: 'নেটওয়ার্ক আর্কিটেকচার, প্রোটোকল ও নিরাপত্তার ভিজ্যুয়াল গাইড',
+      description: 'কম্পিউটারগুলো কীভাবে যোগাযোগ করে, নেটওয়ার্ক প্রোটোকলগুলো কীভাবে কাজ করে, ডেটা কীভাবে নেটওয়ার্ক জুড়ে সফর করে, এবং নিরাপদ যোগাযোগ কীভাবে তথ্যকে সুরক্ষিত করে — তা অন্বেষণ করুন।',
+      label: 'ইন্টারঅ্যাক্টিভ অ্যানিমেটেড নেটওয়ার্কিং একাডেমি',
+      
+      // Navigation
+      previousChapter: 'পূর্ববর্তী অধ্যায়',
+      nextChapter: 'পরবর্তী অধ্যায়',
+      playAnimation: 'অ্যানিমেশন চালু করুন',
+      pauseAnimation: 'অ্যানিমেশন থামান',
+      replayAnimation: 'অ্যানিমেশন পুনরাবৃত্তি করুন',
+      animationSpeed: 'অ্যানিমেশনের গতি',
+      fullscreen: 'ফুলস্ক্রিন',
+      exitFullscreen: 'ফুলস্ক্রিন থেকে বের হন',
+      chapterNavigation: 'অধ্যায় নেভিগেশন',
+      progress: 'প্রগতি',
+      languageToggle: 'ভাষা',
+      presenterMode: 'প্রেজেন্টার মোড',
+      
+      // Chapters
+      chapter: 'অধ্যায়',
+      of: 'র',
+      module: 'মডিউল',
+      selectModule: 'মডিউল নির্বাচন করুন',
+      showChapters: 'অধ্যায়ের তালিকা দেখান',
+      hideChapters: 'অধ্যায়ের তালিকা লুকান',
+      chapters: 'অধ্যায়',
+      
+      // Common terms
+      client: 'ক্লায়েন্ট',
+      server: 'সার্ভার',
+      router: 'রাউটার',
+      switch: 'স্যুইচ',
+      packet: 'প্যাকেট',
+      frame: 'ফ্রেম',
+      segment: 'সেগমেন্ট',
+      protocol: 'প্রোটোকল',
+      network: 'নেটওয়ার্ক',
+      internet: 'ইন্টারনেট',
+      lan: 'ল্যান',
+      wan: 'ওয়্যান',
+      interface: 'ইন্টারফেস',
+      node: 'নোড',
+      device: 'ডিভাইস',
+      communication: 'যোগাযোগ',
+      request: 'অনুরোধ',
+      response: 'প্রতিক্রিয়া',
+      send: 'পাঠানো',
+      receive: 'প্রাপ্ত করা',
+      connection: 'সংযোগ',
+      data: 'ডেটা',
+      header: 'হেডার',
+      payload: 'পেলোড',
+      trailer: 'ট্রেলার',
+      encapsulation: 'এনক্যাপসুলেশন',
+      decapsulation: 'ডি-এনক্যাপসুলেশন',
+      
+      // Chapter titles
+      chapter1: 'কম্পিউটার নেটওয়ার্ক কীভাবে যোগাযোগ করে',
+      chapter2: 'ISO/OSI নেটওয়ার্ক মডেল',
+      chapter3: 'TCP/IP মডেল এবং এর লেয়ারগুলো',
+      chapter4: 'নেটওয়ার্ক এনক্যাপসুলেশন এবং ডি-এনক্যাপসুলেশন',
+      chapter5: 'ইথারনেট — লোকাল নেটওয়ার্কের ভিতরে যোগাযোগ',
+      chapter6: 'MAC ঠিকানা — নেটওয়ার্ক ইন্টারফেস চিহ্নিত করা',
+      chapter7: 'ARP — ডিভাইসের MAC ঠিকানা খুঁজে বের করা',
+      chapter8: 'IP ঠিকানা — নেটওয়ার্ক জুড়ে ডিভাইস চিহ্নিত করা',
+      chapter9: 'পাবলিক এবং প্রাইভেট IP ঠিকানা',
+      chapter10: 'সাবনেটিং — নেটওয়ার্ককে ছোট নেটওয়ার্কে ভাগ করা',
+      chapter11: 'IP রাউটিং — প্যাকেট কীভাবে গন্তব্য খুঁজে পায়',
+      chapter12: 'NAT — প্রাইভেট নেটওয়ার্ককে ইন্টারনেটের সাথে সংযুক্ত করা',
+      chapter13: 'DHCP — ডিভাইসগুলো কীভাবে নেটওয়ার্ক কনফিগারেশন পায়',
+      chapter14: 'TCP — நিশ্চিত, ক্রমানুসারী যোগাযোগ',
+      chapter15: 'TCP থ্রি-ওয়ে হ্যান্ডশেক — SYN, SYN-ACK, ACK',
+      chapter16: 'UDP — দ্রুত, সংযোগ-রহিত ডেটাগ্রাম যোগাযোগ',
+      chapter17: 'পোর্ট — নেটওয়ার্ক সেবা চিহ্নিত করা',
+      chapter18: 'DNS — ডোমেইন নামকে IP ঠিকানায় রূপান্তর',
+      chapter19: 'HTTP — ওয়েব ব্রাউজার ও সার্ভার কীভাবে যোগাযোগ করে',
+      chapter20: 'HTTPS — TLS দিয়ে HTTP সুরক্ষিত করা',
+      chapter21: 'HTTPS দিয়ে HTTP সুরক্ষিত করা',
+      chapter22: 'ইমেইল ট্রান্সমিশন সুরক্ষিত করা — TLS সহ SMTP',
+      chapter23: 'ইমেইল রিট্রিভাল সুরক্ষিত করা — TLS সহ POP3',
+      chapter24: 'ইমেইল অ্যাক্সেস সুরক্ষিত করা — TLS সহ IMAP',
+      chapter25: 'SSH বনাম TELNET — নিরাপদ রিমোট অ্যাক্সেস',
+      chapter26: 'VPN — অনিরাপদ নেটওয়ার্কের ওপর নিরাপদ নেটওয়ার্ক তৈরি করা',
+      chapter27: 'ICMP — নেটওয়ার্ক ডায়াগনস্টিক্স এবং ত্রুটি রিপোর্টিং',
+      chapter28: 'WebSockets — রিয়েল-টাইম দ্বিমুখী যোগাযোগ',
+      chapter29: 'আধুনিক ওয়েব ইন্ফ্রাস্ট্রাকচার কীভাবে নেটওয়ার্ক ট্রাফিক পরিচালনা করে',
+      chapter30: 'একটি সম্পূর্ণ নেটওয়ার্ক অনুরোধ — অ্যাপ্লিকেশন থেকে সার্ভার পর্যন্ত',
+      
+      // Module titles
+      module1: 'নেটওয়ার্কিং ফাউন্ডেশন',
+      module2: 'ইথারনেট, MAC, IP এবং নেটওয়ার্ক অ্যাক্সেস',
+      module3: 'ট্রান্সপোর্ট প্রোটোকল এবং পোর্ট',
+      module4: 'কোর নেটওয়ার্ক প্রোটোকল',
+      module5: 'নেটওয়ার্ক যোগাযোগ সুরক্ষিত করা',
+      module6: 'অতিরিক্ত নেটওয়ার্কিং কোর প্রোটোকল',
+      module7: 'সম্পূর্ণ নেটওয়ার্ক যোগাযোগ',
+      
+      // Learning structure
+      introduce: 'পরিচয়',
+      visualize: 'দৃশ্যমান করা',
+      animate: 'অ্যানিমেট করা',
+      explain: 'ব্যাখ্যা করা',
+      inspect: 'পরিদর্শন করা',
+      summarize: 'সংক্ষিপ্ত করা',
+      connect: 'সংযোগ করা',
+      keyTakeaways: 'প্রধান শিক্ষা',
+      relatedChapters: 'সম্পর্কিত অধ্যায়',
+      technicalDetails: 'তাত্ত্বিক বিবরণ',
+      
+      // Controls
+      speed: 'গতি',
+      slow: 'ধীর',
+      normal: 'সাধারণ',
+      fast: 'দ্রুত',
+      step: 'ধাপ',
+      reset: 'রিসেট',
+      
+      // Status
+      loading: 'লোড হচ্ছে...',
+      ready: 'প্রস্তুত',
+      playing: 'চলছে',
+      current: 'বর্তমান',
+      paused: 'থেমেছে',
+      completed: 'সম্পন্ন',
+    }
+  }
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: 'en',
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+export default i18n;
