@@ -1,6 +1,6 @@
 {
-  "name": "networking-core",
-  "version": "1.0.0",
+  "name": "linux-for-hacker",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -34,5 +34,7 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5"
-  }
+  },
+  "description": "Linux for Hacker \u2014 an animated, attacker-minded guide to networking. Zero Trust Academy.",
+  "author": "Abs Shakeel"
 }

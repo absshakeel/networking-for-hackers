@@ -3,6 +3,8 @@ import { useAppStore } from '../../store';
 import { DiagramWrapper } from './DiagramWrapper';
 import { ChapterLoading } from './ChapterLoading';
 import { ChapterError } from './ChapterError';
+import { CHAPTER_DEFINITIONS } from '../../data/chapters';
+import CoreDiagram from '../diagrams/core/CoreDiagram';
 
 const chapterComponents: Record<string, ReturnType<typeof lazy>> = {
   Chapter1: lazy(() => import('../../components/diagrams/chapter1/Chapter1')),
@@ -46,7 +48,8 @@ export function ChapterRenderer({ chapterId, reducedMotion }: ChapterRendererPro
   const { modules, animationState, setAnimationState, markChapterComplete, language } = useAppStore();
   
   const chapter = modules.flatMap(m => m.chapters).find(c => c.id === chapterId);
-  const LazyComponent = chapter ? chapterComponents[chapter.component] : null;
+  const definition = CHAPTER_DEFINITIONS[chapterId];
+  const LazyComponent = chapter && !definition ? chapterComponents[chapter.component] : null;
   
   useEffect(() => {
     if (chapter) {
@@ -61,7 +64,7 @@ export function ChapterRenderer({ chapterId, reducedMotion }: ChapterRendererPro
     }
   }, [animationState.currentTime, animationState.duration, animationState.isPlaying, chapterId, markChapterComplete, setAnimationState]);
   
-  if (!chapter || !LazyComponent) {
+  if (!chapter) {
     return (
       <div className="diagram-area flex items-center justify-center p-8">
         <div className="text-center max-w-md">
@@ -81,16 +84,30 @@ export function ChapterRenderer({ chapterId, reducedMotion }: ChapterRendererPro
       animationState={animationState}
       reducedMotion={reducedMotion}
     >
-      <Suspense fallback={<ChapterLoading />}>
+      {definition ? (
         <ErrorBoundary>
-          <LazyComponent 
+          <CoreDiagram
             key={chapterId}
+            definition={definition}
+            width={960}
+            height={540}
             language={language}
             animationState={animationState}
             onAnimationComplete={() => markChapterComplete(chapterId)}
           />
         </ErrorBoundary>
-      </Suspense>
+      ) : LazyComponent ? (
+        <Suspense fallback={<ChapterLoading />}>
+          <ErrorBoundary>
+            <LazyComponent
+              key={chapterId}
+              language={language}
+              animationState={animationState}
+              onAnimationComplete={() => markChapterComplete(chapterId)}
+            />
+          </ErrorBoundary>
+        </Suspense>
+      ) : null}
     </DiagramWrapper>
   );
 }

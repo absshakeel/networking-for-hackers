@@ -23,7 +23,7 @@ export const TONE = {
 
 export type Tone = keyof typeof TONE;
 
-const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+const MONO = '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
 const SANS = 'Inter, Nunito Sans, system-ui, -apple-system, Segoe UI, sans-serif';
 
 export interface BaseProps {
@@ -146,7 +146,10 @@ export interface Sketch {
     options: FxOptions & { from: [number, number]; to: [number, number]; fade?: boolean }
   ): void;
   /** Pulses elements to draw attention to them. */
-  pulse(selector: string, options?: FxOptions & { scale?: number; repeat?: number }): void;
+  pulse(
+    selector: string,
+    options?: FxOptions & { scale?: number; repeat?: number; transformOrigin?: string }
+  ): void;
 }
 
 /**
@@ -230,24 +233,13 @@ export function createFx(tl: gsap.core.Timeline, root: ParentNode): Sketch {
     },
 
     pulse: (selector, options = {}) => {
-      const { scale = 1.08, repeat = 1, ...rest } = options;
+      const { scale = 1.08, repeat = 1, transformOrigin = '50% 50%', ...rest } = options;
       const targets = select(selector);
       if (!targets.length) return;
       const { duration = 0.4, stagger = 0.05, position } = rest;
       targets.forEach((target, index) => {
         const at = typeof position === 'number' ? position + index * stagger : position;
-        tl.to(
-          target,
-          {
-            scale,
-            transformOrigin: '50% 50%',
-            duration,
-            repeat,
-            yoyo: true,
-            ease: 'sine.inOut',
-          },
-          at
-        );
+        tl.to(target, { scale, transformOrigin, duration, repeat, yoyo: true, ease: 'sine.inOut' }, at);
       });
     },
   };
@@ -262,14 +254,17 @@ export function DiagramSvg({
   children,
   className,
   label,
+  padding = 0,
 }: {
   svgRef?: React.Ref<SVGSVGElement>;
   children: React.ReactNode;
   className?: string;
   label?: string;
+  /** Inner gutter in user units — 0 keeps diagrams edge to edge. */
+  padding?: number;
 }) {
   return (
-    <div className={`w-full h-full flex items-center justify-center p-3 ${className ?? ''}`}>
+    <div className={`w-full h-full flex items-center justify-center ${className ?? ''}`}>
       <svg
         ref={svgRef}
         viewBox={`0 0 ${CANVAS.width} ${CANVAS.height}`}
@@ -279,7 +274,11 @@ export function DiagramSvg({
         aria-label={label}
       >
         <rect x={0} y={0} width={CANVAS.width} height={CANVAS.height} fill="#ffffff" />
-        {children}
+        {padding ? (
+          <g transform={`translate(${padding} ${padding})`}>{children}</g>
+        ) : (
+          children
+        )}
       </svg>
     </div>
   );
@@ -361,8 +360,19 @@ export function NodeCard({
   centres.push(cursor + LEADING / 2);
   cursor += LEADING;
   const subtitleIndex = subtitle ? centres.length : -1;
-  if (subtitle) centres.push(cursor + LEADING / 2);
+  if (subtitle) {
+    centres.push(cursor + LEADING / 2);
+    // Without advancing the cursor the subtitle shared its baseline with the
+    // first body row, so the two rows rendered on top of each other.
+    cursor += LEADING;
+  }
   const lineOffset = centres.length;
+  // Body rows were never appended to `centres`, so their `y` fell back to 0 and
+  // every card leaked its detail lines into the top-left of the canvas.
+  bodyLines.forEach(() => {
+    centres.push(cursor + LEADING / 2);
+    cursor += LEADING;
+  });
 
   return (
     <g className={className}>
@@ -486,6 +496,7 @@ export function Arrow({
   return (
     <g className={className}>
       <path
+        className="arrow-line"
         d={path}
         fill="none"
         stroke={palette.stroke}
@@ -494,12 +505,14 @@ export function Arrow({
         strokeDasharray={dashed ? '7 6' : undefined}
       />
       <path
+        className="arrow-head"
         d="M0,0 L-10,3.6 L-10,-3.6 Z"
         fill={palette.stroke}
         transform={`translate(${x2}, ${y2}) rotate(${angle})`}
       />
       {bidirectional && (
         <path
+          className="arrow-head"
           d="M0,0 L-10,3.6 L-10,-3.6 Z"
           fill={palette.stroke}
           transform={`translate(${x1}, ${y1}) rotate(${startAngle + 180})`}
@@ -637,7 +650,7 @@ export interface StepPanelProps extends BaseProps {
 }
 
 /** Naive word wrap — SVG has no automatic text wrapping. */
-function wrapText(text: string, maxChars: number, maxLines = 2): string[] {
+export function wrapText(text: string, maxChars: number, maxLines = 2): string[] {
   const words = text.split(/\s+/);
   const lines: string[] = [];
   let line = '';
@@ -836,6 +849,85 @@ export function CodeBox({ x, y, w, h, title, lines, tone = 'navy', className }: 
           {line}
         </text>
       ))}
+    </g>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Attacker lens — the security-researcher read on every diagram
+ * ------------------------------------------------------------------ */
+
+export interface AttackerLensProps extends BaseProps {
+  x?: number;
+  y?: number;
+  w?: number;
+  title: string;
+  surface: string;
+  vector: string;
+  defender: string;
+}
+
+/**
+ * Red strip pinned to the bottom of a chapter canvas.
+ *
+ * Three columns answer the questions a pentester actually asks: what is exposed
+ * (attack surface), how it gets abused (attack vector) and which control stops
+ * it (defender focus).
+ */
+export function AttackerLens({
+  x = 8,
+  y = 396,
+  w = CANVAS.width - 16,
+  title,
+  surface,
+  vector,
+  defender,
+  className,
+}: AttackerLensProps) {
+  const h = CANVAS.height - y - 14;
+  const columns = [
+    { glyph: '🎯', label: 'ATTACK SURFACE', body: surface },
+    { glyph: '⚔️', label: 'HOW IT IS EXPLOITED', body: vector },
+    { glyph: '🛡️', label: 'DEFENDER FOCUS', body: defender },
+  ];
+  const columnW = (w - 32) / 3;
+
+  return (
+    <g className={className}>
+      <rect x={x} y={y} width={w} height={h} rx={14} fill="#fef2f2" stroke="#ef4444" strokeWidth={1.6} />
+      <path
+        d={`M ${x} ${y + 16} Q ${x} ${y} ${x + 16} ${y} L ${x + w - 16} ${y} Q ${x + w} ${y} ${x + w} ${y + 16} L ${x + w} ${y + 30} L ${x} ${y + 30} Z`}
+        fill="#dc2626"
+      />
+      <text x={x + 16} y={y + 20} fontFamily={SANS} fontSize={12.5} fontWeight={700} fill="#ffffff">
+        🔐 {title}
+      </text>
+      {columns.map((column, index) => {
+        const columnX = x + 16 + index * columnW;
+        const lines = wrapText(column.body, Math.max(26, Math.floor(columnW / 5.9)), 3);
+        return (
+          <g key={column.label}>
+            {index > 0 && (
+              <line
+                x1={columnX - 10}
+                y1={y + 42}
+                x2={columnX - 10}
+                y2={y + h - 14}
+                stroke="#fecaca"
+                strokeWidth={1.4}
+              />
+            )}
+            <text x={columnX} y={y + 54} fontFamily={SANS} fontSize={10.5} fontWeight={700} fill="#b91c1c">
+              {column.glyph} {column.label}
+            </text>
+            {lines.map((line, lineIndex) => (
+              <text key={line} x={columnX} y={y + 72 + lineIndex * 15} fontFamily={SANS} fontSize={11.5} fill="#7f1d1d">
+                {line}
+              </text>
+            ))}
+          </g>
+        );
+      })}
     </g>
   );
 }
